@@ -1,0 +1,17 @@
+config:
+  services:
+    - name: service1
+      url: url1
+      contentType: text/html
+      jsonPath: url1Get
+      endpoints:
+        - method: GET
+          delay: 500
+        - method: POST
+          jsonPath: url1Post
+    - name: service2
+      endpoint:
+      delay: 5000
+      url: url2
+      jsonPath: url2Json
+      contentType: application/json
