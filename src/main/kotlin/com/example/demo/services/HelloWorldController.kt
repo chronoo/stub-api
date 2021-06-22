@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class HelloWorldController {
-    @GetMapping
+    @GetMapping("/fsdfsdf/sdfsdfsdf")
     @Measured
     fun helloWorld(): Resp = Resp()
 
-    @PostMapping
+    @PostMapping("/sdfsdf")
     @Measured
     fun helloWorld1(): Resp = Resp()
 }

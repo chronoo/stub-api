@@ -36,4 +36,41 @@ class Test1 {
     operator fun ObjectNode.get(key: String?): ObjectNode {
         return this.get(key) as ObjectNode
     }
+
+    @Test
+    fun ccc() {
+        mapOf(Aaaa.AAA to Numb(1), Aaaa.BBB to Numb(2))
+            .map { "${it.key}:\n${it.value}" }
+            .joinToString("\n-------------\n")
+            .let { println(it) }
+
+        println("----------//----------")
+
+        mapOf(Aaaa.AAA to Numb(1), Aaaa.BBB to Numb(2))
+            .reduce("") { entry, acc -> "$acc${entry.key}:\n${entry.value}\n-------------\n" }
+            .let { println(it) }
+    }
+}
+
+private fun <K, V, R> Map<K, V>.reduce(acc: R, operation: (entry: Map.Entry<K, V>, acc: R) -> R): R =
+    iterator().run {
+        when {
+            !hasNext() -> acc
+            else -> {
+                var accumulator = acc
+                while (hasNext()) accumulator = operation(next(), accumulator)
+                accumulator
+            }
+        }
+    }
+
+fun <K, V> Map.Entry<K, V>.toString(separator: String) = "$key$separator$value"
+
+enum class Aaaa {
+    AAA,
+    BBB
+}
+
+data class Numb(val i: Int) {
+    override fun toString(): String = "numb: i"
 }
