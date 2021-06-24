@@ -5,6 +5,7 @@ target/
 mvnw
 mvnw.cmd
 .mvn/wrapper
+mqjms.log.*
 
 ### STS ###
 .apt_generated
