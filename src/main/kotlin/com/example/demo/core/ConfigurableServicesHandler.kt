@@ -1,11 +1,26 @@
 package com.example.demo.core
 
-import org.springframework.web.servlet.handler.AbstractHandlerMapping
-import javax.servlet.http.HttpServletRequest
+import com.example.demo.core.config.ServicesPropertiesConfig
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping
+import java.util.*
 
-class ConfigurableServicesHandler(
+@Configuration
+class Conf(
+    private val config: ServicesPropertiesConfig,
     private val configurableServicesController: ConfigurableServicesController
-) : AbstractHandlerMapping() {
-    @Throws(Exception::class)
-    override fun getHandlerInternal(request: HttpServletRequest) = configurableServicesController
+) {
+    @Bean
+    fun simpleUrlHandlerMapping() =
+        SimpleUrlHandlerMapping().apply {
+            order = 0
+            setMappings(
+                Properties().apply {
+                    config.endpoints.forEach {
+                        put(it.url, configurableServicesController)
+                    }
+                }
+            )
+        }
 }

@@ -3,8 +3,7 @@ package com.example.demo.core
 import com.example.demo.core.config.ServiceMethod
 import com.example.demo.core.config.ServicesPropertiesConfig
 import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
@@ -14,7 +13,7 @@ import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-@Component
+@Controller
 class ConfigurableServicesController(private val prop: ServicesPropertiesConfig) : AbstractController() {
     @Throws(java.lang.Exception::class)
     override fun handleRequestInternal(
@@ -22,17 +21,12 @@ class ConfigurableServicesController(private val prop: ServicesPropertiesConfig)
         response: HttpServletResponse
     ): ModelAndView? =
         measure("${request.method} ${request.requestURI}") {
-            try {
-                prop.endpoints.firstOrNull { endpoint -> endpoint.url.startsWith(request.requestURI) }
-                    ?.let {
-                        Thread.sleep(it.delay ?: 0)
-                        response.contentType = it.contentType
-                        response.body = it.jsonPath
-                    } ?: throw NotFoundException("Method not found")
-            } catch (e: Exception) {
-                logger.error("Handle request error", e)
-                throw e
-            }
+            prop.endpoints.firstOrNull { endpoint -> endpoint.url.startsWith(request.requestURI) }
+                ?.let {
+                    Thread.sleep(it.delay ?: 0)
+                    response.contentType = it.contentType
+                    response.body = it.jsonPath
+                }
             null
         }
 }
