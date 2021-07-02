@@ -3,10 +3,13 @@ config:
     - name: service1
       endpoints:
         - url: /bbb
+          prototype: com.example.demo.core.transforms.Plus
+          transform: plus
           delay: 500
           jsonPath: url1Get
           contentType: text/html
         - url: /aaa
+          name: end2
           delay: 500
           jsonPath: url1Get
           contentType: text/html

@@ -18,7 +18,7 @@ class Conf(
             setMappings(
                 Properties().apply {
                     config.endpoints.forEach {
-                        put(it.url, configurableServicesController)
+                        put(it.first.url, configurableServicesController)
                     }
                 }
             )
